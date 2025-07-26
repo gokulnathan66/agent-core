@@ -1,3 +1,5 @@
+# Health Check 
+ curl localhost:8080/ping        
 # Call the Agent 
 curl -X POST http://localhost:8080/invocations \
 -H "Content-Type: application/json" \
@@ -17,3 +19,9 @@ curl -X POST http://localhost:8080/invocations \
 curl -X POST http://localhost:8080/invocations \
 -H "Content-Type: application/json" \
 -d '{"prompt": "what list the instance in my account"}'
+
+# list the instance whos are running and their name 
+
+curl -X POST http://localhost:8080/invocations \
+-H "Content-Type: application/json" \
+-d '{"prompt": "list the instance whos are running and their name "}'
