@@ -9,7 +9,7 @@ agents:
       execution_role: arn:aws:iam::302263040839:role/Vesuvis_Agentcore_execution_role
       execution_role_auto_create: true
       account: '302263040839'
-      region: us-east-1
+      region: eu-central-1
       ecr_repository: null
       ecr_auto_create: true
       network_configuration:
