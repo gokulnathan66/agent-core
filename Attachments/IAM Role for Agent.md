@@ -115,7 +115,6 @@ Replace the Appropriate `region`, `accountid` and `agentname` correctly
 }
 ```
 
-# Execcution Policy with correct names 
 ```
 {
     "Version": "2012-10-17",

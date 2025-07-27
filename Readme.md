@@ -1,16 +1,23 @@
-# Plan Design 
-![[Design POC]]
-[[Design POC]]
+# About the code 
 
-# Version1.1 
-### Agent Local Run and Local Invocations
+## Clone the Repo 
+- Create a venv `python -m venv venv`
+- Activate the venv `source venv/bin/activate`
+- Install the requirements `pip install -r requirements.txt`
+- Delete or move the the file of following to another folder cause, When deploying the agent these files will be recreated by the `agentcore` in you AWS account. You can keep these for your reference. For you to test the Agent you have to host the agent in your AWS account with Your IAM permissions. 
+	- Dockerfile 
+	- .bedrockagentcore.yaml 
+	- .dockerignore 
 
-Plan Implementation 
-[[Design - Implementation Plan v2]]
-![[Design - Implementation Plan v2]]
-- sample agent run using AgentCore Bedrock : Tool to list EC2 Instance Names
-- Deploy it in Agent core
-- Call the Agent Success fully 
+```
+- myagent.py : consist of code that calls the agent and do the work. the Bedrock SDK make so easy to Integration and Strands and Local testing.
+- agent_tools.py : have all the tools required for the agent to function. You can add tools to this file , import in myagent.py to be accessed by strands.
+- curl_commands.md used to test the agent locally
+- requirements.txt : Required library
+- Design/ : consist of this project Designs
+- Attacthments/ : image attachments.
+```
+
 
 
 ### Deploy Agent [AWS Docs Deploy link ](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/runtime-getting-started-toolkit.html#runtime-deploying-agent)
