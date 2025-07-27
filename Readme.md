@@ -154,6 +154,3 @@ For more troubleshooting guidance, see [AWS AgentCore Troubleshooting](https://d
 
 ---
 
-**Region**: us-east-1  
-**Account ID**: 302263040839  
-**Agent Name**: agent0.1-Vesuvius 
