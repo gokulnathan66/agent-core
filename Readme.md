@@ -24,7 +24,7 @@
 #### IAM role 
 Configure your agent with the following command. For `YOUR_IAM_ROLE_ARN`, you need an IAM role with suitable permissions. For information see [Permissions for AgentCore Runtime](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/runtime-permissions.html).
 
-[[IAM Role for Agent]]
+![[IAM Role for Agent]]
 Role ARN : 
 ```
 arn:aws:iam::302263040839:role/Vesuvis_Agentcore_execution_role
