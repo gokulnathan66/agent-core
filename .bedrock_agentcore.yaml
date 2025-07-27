@@ -9,9 +9,9 @@ agents:
       execution_role: arn:aws:iam::302263040839:role/Vesuvis_Agentcore_execution_role
       execution_role_auto_create: true
       account: '302263040839'
-      region: eu-central-1
-      ecr_repository: null
-      ecr_auto_create: true
+      region: us-east-1
+      ecr_repository: 302263040839.dkr.ecr.us-east-1.amazonaws.com/bedrock-agentcore-myagent
+      ecr_auto_create: false
       network_configuration:
         network_mode: PUBLIC
       protocol_configuration:
@@ -19,9 +19,9 @@ agents:
       observability:
         enabled: true
     bedrock_agentcore:
-      agent_id: null
-      agent_arn: null
-      agent_session_id: null
+      agent_id: myagent-7PG26c5xoe
+      agent_arn: arn:aws:bedrock-agentcore:us-east-1:302263040839:runtime/myagent-7PG26c5xoe
+      agent_session_id: 661ef99d-0f56-4c82-81dd-c4734f37c6b1
     codebuild:
       project_name: null
       execution_role: null
