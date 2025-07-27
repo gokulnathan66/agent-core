@@ -1,6 +1,10 @@
 #agent_tools.py
 from strands import Agent, tool
+from strands_tools import calculator, file_read, shell, http_request
 import boto3
+
+
+
 
 def get_current_weather(city: str) -> str:
     """Get the current weather for a given city"""

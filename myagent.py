@@ -2,9 +2,10 @@
 from bedrock_agentcore.runtime import BedrockAgentCoreApp
 from strands import Agent
 from agent_tools import weather_tool, ec2_tool
+from strands_tools import  http_request
 
 app = BedrockAgentCoreApp()
-agent = Agent(tools=[weather_tool, ec2_tool])
+agent = Agent(tools=[weather_tool, ec2_tool, http_request])
 
 @app.entrypoint
 def invoke(payload):
