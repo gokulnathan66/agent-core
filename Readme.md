@@ -1,105 +1,159 @@
-# About the code 
+# Agent Core POC
 
-## Clone the Repo 
-- Create a venv `python -m venv venv`
-- Activate the venv `source venv/bin/activate`
-- Install the requirements `pip install -r requirements.txt`
-- Delete or move the the file of following to another folder cause, When deploying the agent these files will be recreated by the `agentcore` in you AWS account. You can keep these for your reference. For you to test the Agent you have to host the agent in your AWS account with Your IAM permissions. 
-	- Dockerfile 
-	- .bedrockagentcore.yaml 
-	- .dockerignore 
+A Proof of Concept implementation for AWS Bedrock AgentCore runtime with custom tools and deployment automation.
+
+## 🚀 Quick Start
+
+### Prerequisites
+- AWS Account with appropriate permissions
+- Python 3.8+
+- AWS CLI configured
+- Docker (for containerized deployment)
+
+### Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd agent-core
+   ```
+
+2. **Set up Python environment**
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   pip install -r requirements.txt
+   ```
+
+3. **Clean up auto-generated files**
+   
+   > **Note**: Delete or move the following files before deployment as they will be recreated by AgentCore:
+   > - `Dockerfile`
+   > - `.bedrockagentcore.yaml`
+   > - `.dockerignore`
+
+## 📁 Project Structure
 
 ```
-- myagent.py : consist of code that calls the agent and do the work. the Bedrock SDK make so easy to Integration and Strands and Local testing.
-- agent_tools.py : have all the tools required for the agent to function. You can add tools to this file , import in myagent.py to be accessed by strands.
-- curl_commands.md used to test the agent locally
-- requirements.txt : Required library
-- Design/ : consist of this project Designs
-- Attacthments/ : image attachments.
+agent-core/
+├── myagent.py              # Main agent code with Bedrock SDK integration
+├── agent_tools.py          # Custom tools for agent functionality
+├── curl_commands.md        # Local testing commands
+├── requirements.txt        # Python dependencies
+├── Design/                 # Project design documents
+├── Attachments/           # Documentation images and IAM configurations
+└── venv/                  # Python virtual environment
 ```
 
+### File Descriptions
 
+- **`myagent.py`**: Core agent implementation using Bedrock SDK for integration with Strands and local testing
+- **`agent_tools.py`**: Collection of tools that extend agent functionality. Add new tools here and import them in `myagent.py`
+- **`curl_commands.md`**: Commands for testing the agent locally
+- **`requirements.txt`**: Required Python libraries
+- **`Design/`**: Project design documents and implementation plans
+- **`Attachments/`**: Image attachments and IAM role configurations
 
-### Deploy Agent [AWS Docs Deploy link ](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/runtime-getting-started-toolkit.html#runtime-deploying-agent)
-#### IAM role 
-Configure your agent with the following command. For `YOUR_IAM_ROLE_ARN`, you need an IAM role with suitable permissions. For information see [Permissions for AgentCore Runtime](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/runtime-permissions.html).
+## 🔐 IAM Configuration
 
-[[IAM Role for Agent]]
-Role ARN : 
-```
-arn:aws:iam::302263040839:role/Vesuvis_Agentcore_execution_role
-```
-#### Deployment steps 
-```
-## Deployment Steps
+### Required IAM Role
+
+The agent requires specific IAM permissions. Use the pre-configured role:
+
+**Role ARN**: `arn:aws:iam::302263040839:role/Vesuvis_Agentcore_execution_role`
+
+For detailed IAM configuration, see [IAM Role for Agent](./Attachments/IAM%20Role%20for%20Agent.md).
+
+> **Important**: Configure your agent with suitable IAM permissions. See [AWS AgentCore Runtime Permissions](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/runtime-permissions.html) for details.
+
+## 🚢 Deployment
 
 ### Step 1: Configure Your Agent
 
-# Run the configuration command to set up your agent:
-
-agentcore configure --entrypoint agent_example.py -er <YOUR_IAM_ROLE_ARN>
-
-
-# The command will:
-##• Generate a Dockerfile and .dockerignore
-##• Create a .bedrock_agentcore.yaml configuration file
-```
-
-```
+```bash
 agentcore configure --entrypoint myagent.py -er arn:aws:iam::302263040839:role/Vesuvis_Agentcore_execution_role
 ```
 
-![[Pasted image 20250727005035.png]]
+This command will:
+- Generate a `Dockerfile` and `.dockerignore`
+- Create a `.bedrock_agentcore.yaml` configuration file
 
+![Configuration Result](./Attachments/Pasted%20image%2020250727005035.png)
 
-#### Deploy local mode 
-```
+### Step 2: Deploy Locally (Development)
+
+```bash
 agentcore launch -l
 ```
 
->[!ERROR] Local Running Olametary Running 
-> Telemetary ERROR. This arise cause we din't deploy a telemetary service that used in Agentcore Observability cloud.
+> **Warning**: Local deployment may show telemetry errors. This occurs because we haven't deployed a telemetry service used in AgentCore Observability cloud.
 
-#### Deploy in Cloud 
+### Step 3: Deploy to AWS Cloud
 
-#aws-commands 
-
-```
+```bash
 agentcore launch
 ```
 
-![[Pasted image 20250727080354.png]]
+![Cloud Deployment](./Attachments/Pasted%20image%2020250727080354.png)
 
+**Deployment Output Example:**
 ```
-Agent Name: myagent                                                                                                                                 
-Agent ARN: arn:aws:bedrock-agentcore:eu-central-1:302263040839:runtime/myagent-J4hSYhHVaX                                  
-ECR URI: 302263040839.dkr.ecr.eu-central-1.amazonaws.com/bedrock-agentcore-myagent                                                          
+Agent Name: myagent
+Agent ARN: arn:aws:bedrock-agentcore:eu-central-1:302263040839:runtime/myagent-J4hSYhHVaX
+ECR URI: 302263040839.dkr.ecr.eu-central-1.amazonaws.com/bedrock-agentcore-myagent
 ```
 
-- Note you Agent ARN that will be used to Invoke your agent further. 
+> **Important**: Save your Agent ARN as it will be needed to invoke your agent.
 
-### Invoke Agents [Agentcore Invoke agent](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/runtime-invoke-agent.html)
+## 🎯 Invoking the Agent
 
-- From the Terminal you have you env variable as of now the agent is authenticated with IAM role so call the agent with 
-```
+### Terminal Invocation
+
+Once deployed, invoke your agent using:
+
+```bash
 agentcore invoke '{"prompt": "Hello"}'
 ```
 
-#### Agent calls 
-![[Pasted image 20250727133843.png]]
+### Example Agent Calls
 
-![[Pasted image 20250727133926.png]]
+![Agent Call Example 1](./Attachments/Pasted%20image%2020250727133843.png)
 
-### Trouble Shoot [Agent troubleshoot](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/runtime-troubleshooting.html)
+![Agent Call Example 2](./Attachments/Pasted%20image%2020250727133926.png)
 
->[!ERROR] Local Running Olametary Running 
-> Telemetary ERROR. This arise cause we din't deploy a telemetary service that used in Agentcore Observability 
+## 🔧 Troubleshooting
 
-### Cognito User Pool [[Cognito Guide]]
- - Use Cognito JWT and Oauth tokens to invoke the model. This will be Useful with customer Deployment 
+### Common Issues
 
-### Deploy MCP servers [MCP](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/runtime-mcp.html)
-- Deploy an MCP server 
-### Create Strands Agent [Strands Agent](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/using-any-agent-framework.html#agent-runtime-frameworks-strands)
+> **Error**: Telemetry issues during local deployment
+> 
+> **Solution**: This error occurs because we haven't deployed a telemetry service used in AgentCore Observability. This is expected for local development.
 
-### Streaming services [Agent Core streaming](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/response-streaming.html)
+> **Error**: Execution role policy error (Frankfurt region)
+> 
+> **Solution**: Keep your region set to `us-east-1`. When explicitly mentioning other regions like `eu-central-1`, Bedrock agent call exceptions may arise because Strands calls the default agent in `us-east-1`.
+
+For more troubleshooting guidance, see [AWS AgentCore Troubleshooting](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/runtime-troubleshooting.html).
+
+## 🔗 Additional Resources
+
+### Authentication & Security
+- **Cognito User Pool**: Use Cognito JWT and OAuth tokens to invoke the model for customer deployments
+
+### Advanced Features
+- **[MCP Servers](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/runtime-mcp.html)**: Deploy Model Context Protocol servers
+- **[Strands Agent](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/using-any-agent-framework.html#agent-runtime-frameworks-strands)**: Create Strands-based agents
+- **[Streaming Services](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/response-streaming.html)**: Implement response streaming
+
+## 📚 Documentation Links
+
+- [AWS AgentCore Runtime Getting Started](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/runtime-getting-started-toolkit.html#runtime-deploying-agent)
+- [AgentCore Runtime Permissions](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/runtime-permissions.html)
+- [Invoking Agents](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/runtime-invoke-agent.html)
+- [Troubleshooting Guide](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/runtime-troubleshooting.html)
+
+---
+
+**Region**: us-east-1  
+**Account ID**: 302263040839  
+**Agent Name**: agent0.1-Vesuvius 
